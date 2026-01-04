@@ -6,9 +6,9 @@ from subprocess import Popen, PIPE, CREATE_NEW_CONSOLE, CREATE_NO_WINDOW
 import threading
 import re
 from time import sleep, time
+import psutil
 
 running = False
-
 
 def apply(self):
     self.stop = threading.Event()
@@ -20,6 +20,10 @@ def apply(self):
         createnewtl = True
     if createnewtl:
         self.ATRtoplevel = ctk.CTkToplevel(self, fg_color="#201d26")
+        self.ATRtoplevel.protocol("WM_DELETE_WINDOW", lambda: (
+            self.stop.set(),
+            self.ATRtoplevel.destroy()
+        ))
         self.ATRtoplevel.geometry("600x200")
         self.ATRtoplevel.title("Apply Timer Resolution")
 
@@ -84,7 +88,7 @@ def apply(self):
 
         self.confirmBtn.pack(side="top", pady=(10,0))
 
-        threading.Thread(target=heartbeat,args=(self.ATRtoplevel,self.timerresthread), daemon=True).start()
+        threading.Thread(target=heartbeat,args=(self.ATRtoplevel,self.stop), daemon=True).start()
     self.ATRtoplevel.attributes("-topmost", True)
     self.ATRtoplevel.after(10,lambda: self.ATRtoplevel.attributes("-topmost", False))
     
@@ -93,19 +97,38 @@ TRES_DIR = r"C:\PostInstall\TimerResolution"
 lastres = 5000
 bestdelta = 1000
 bestres = -1
+
+def cpuUsageWatch(process,label):
+    p = psutil.Process(process.pid)
+    p.cpu_percent(interval=None) #start measurement
+    cpuusageLabel = ctk.CTkLabel(label.master, text="")
+    cpuusageLabel.pack(side="top")
+    sleep(1)
+    while (process.poll() is None) and (not label.master.master.stop.is_set()) and (cpuusageLabel.winfo_exists()): #while process is running
+        cpuu = p.cpu_percent(interval=None) / psutil.cpu_count(logical=True)
+        cpuusageLabel.configure(text=f"Stress test CPU usage: {round(cpuu,2)}%")
+        sleep(1)
+
 def confirm(minres,maxres,interval,samples,btn,label):
+    global subs
+    subs = label.master.master.openSubprocesses = []
+    
     global bestres
     global bestdelta
     global lastres
     label.configure(text="Waiting for stress test to load...")
-    Popen(["C:/PostInstall/TimerResolution/stress"],creationflags=CREATE_NO_WINDOW)
+    stresstest = Popen(["C:/PostInstall/TimerResolution/stress"],creationflags=CREATE_NO_WINDOW)
+    subs.append(stresstest)
+    #start thread to watch cpu usage of stress test
+    threading.Thread(target=cpuUsageWatch, args=(stresstest,label), daemon=True).start()
+
     beforetime = time()
-    while time() - beforetime < 0.1:
+    while time() - beforetime < 1:
         pass
     cmd = f"{join(TRES_DIR,"timerres.exe")} --minRes {minres.get()} --maxRes {maxres.get()} --interval {interval.get()} --samples {samples.get()}"
-    process = Popen(cmd.split(" "),creationflags=CREATE_NO_WINDOW,stdout=PIPE,text=True)
-    for line in process.stdout:
-
+    timerres = Popen(cmd.split(" "),creationflags=CREATE_NO_WINDOW,stdout=PIPE,text=True)
+    subs.append(timerres)
+    for line in timerres.stdout:
         if btn.master.master.stop.is_set(): #toplevel is gone
             break
         
@@ -120,6 +143,8 @@ def confirm(minres,maxres,interval,samples,btn,label):
         elif re.search(r"^\d+$",line):
             label.configure(text=f"Benchmark complete\nApplying resolution {bestres} (delta: {bestdelta})")
             apps = ["stress","MeasureSleep","SetTimerResolution"]
+            for process in subs:
+                process.terminate()
             for app in apps:
                 Popen(["taskkill","/f","/im",f"{app}.exe"],creationflags=CREATE_NO_WINDOW)
 
@@ -133,7 +158,7 @@ def confirm(minres,maxres,interval,samples,btn,label):
             shortcut.save()
 
 
-            sleep(0.5)
+            sleep(1) #wait for stress test to be gone + wait for settimerres to finish being killed
             #Popen(
             #    [
             #        "start",'""',"/b",r"C:/PostInstall/TimerResolution/SetTimerResolution.exe","--no-console","--resolution",bestres
@@ -142,22 +167,26 @@ def confirm(minres,maxres,interval,samples,btn,label):
             #if youre seeing this tell me why this doesnt work ^ please plase paslepaslepaslepsalesaleap i tried \ instead of /
             system(r'start "" /b C:/PostInstall/TimerResolution/SetTimerResolution.exe --no-console --resolution ' + str(bestres))
             label.configure(text=f"Tool execution complete, added startup task:\nResolution: {bestres} Delta: {bestdelta}")
-    
+
+
 
 def error(btn,msg):
     btn.configure(text=msg)
     btn.master.after(1500, lambda: btn.configure(text="Confirm"))
 
-def heartbeat(toplevel: ctk.CTkToplevel, thread: threading.Thread):
+def heartbeat(toplevel: ctk.CTkToplevel, stopflag):
     while True:
         print("heartbeat")
         try:
             if not toplevel.winfo_exists():
-                toplevel.master.stop.set()
+                stopflag.set()
+                break
             else:
                 sleep(0.5)
-        except RuntimeError:
-            pass
+        except RuntimeError as e:
+            print(e)
+            stopflag.set()
+            break
 
 def parseAndStart(minres,maxres,interval,samples,btn):
     try:
