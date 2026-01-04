@@ -11,10 +11,10 @@ from aboutPage import aboutPage
 from os import listdir
 from os.path import isdir,join,abspath
 from utils import resource_path #used to find files built into exe / in the current dir
-g = False
 class newGUI(ctk.CTk):
     def __init__(self):
         super().__init__(fg_color="#201d26")
+        self.openSubprocesses = []
         self.currentTab = "initialising"
         self.geometry("1200x650")
         self.title("OSlivion Options")
@@ -118,6 +118,8 @@ def on_close(gui):
     apps = ["stress","MeasureSleep","timerres"]
     for app in apps:
         Popen(["taskkill","/f","/im",f"{app}.exe"],creationflags=CREATE_NO_WINDOW)
+    for process in gui.openSubprocesses: #extra
+        process.terminate()
     gui.destroy()
 gui = newGUI()
 gui.protocol("WM_DELETE_WINDOW", lambda: on_close(gui))

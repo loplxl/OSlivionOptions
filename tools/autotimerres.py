@@ -110,15 +110,13 @@ def cpuUsageWatch(process,label):
         sleep(1)
 
 def confirm(minres,maxres,interval,samples,btn,label):
-    global subs
-    subs = label.master.master.openSubprocesses = []
     
     global bestres
     global bestdelta
     global lastres
     label.configure(text="Waiting for stress test to load...")
     stresstest = Popen(["C:/PostInstall/TimerResolution/stress"],creationflags=CREATE_NO_WINDOW)
-    subs.append(stresstest)
+    label.master.master.openSubprocesses.append(stresstest)
     #start thread to watch cpu usage of stress test
     threading.Thread(target=cpuUsageWatch, args=(stresstest,label), daemon=True).start()
 
@@ -127,7 +125,7 @@ def confirm(minres,maxres,interval,samples,btn,label):
         pass
     cmd = f"{join(TRES_DIR,"timerres.exe")} --minRes {minres.get()} --maxRes {maxres.get()} --interval {interval.get()} --samples {samples.get()}"
     timerres = Popen(cmd.split(" "),creationflags=CREATE_NO_WINDOW,stdout=PIPE,text=True)
-    subs.append(timerres)
+    label.master.master.openSubprocesses.append(timerres)
     for line in timerres.stdout:
         if btn.master.master.stop.is_set(): #toplevel is gone
             break
@@ -143,7 +141,7 @@ def confirm(minres,maxres,interval,samples,btn,label):
         elif re.search(r"^\d+$",line):
             label.configure(text=f"Benchmark complete\nApplying resolution {bestres} (delta: {bestdelta})")
             apps = ["stress","MeasureSleep","SetTimerResolution"]
-            for process in subs:
+            for process in label.master.master.openSubprocesses:
                 process.terminate()
             for app in apps:
                 Popen(["taskkill","/f","/im",f"{app}.exe"],creationflags=CREATE_NO_WINDOW)
