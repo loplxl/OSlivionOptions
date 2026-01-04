@@ -1,7 +1,6 @@
 version_info.txt
-dist/
 build/
+dist/OSO/
 __pycache__/
 tools/__pycache__/
-build.bat
 *.spec
