@@ -1,7 +1,7 @@
 import customtkinter as ctk
 from tkinter import StringVar
 from os.path import join
-from os import environ,system,startfile
+from os import environ,system
 from subprocess import Popen, PIPE, CREATE_NEW_CONSOLE, CREATE_NO_WINDOW
 import threading
 import re
@@ -98,7 +98,7 @@ def confirm(minres,maxres,interval,samples,btn,label):
     global bestdelta
     global lastres
     label.configure(text="Waiting for stress test to load...")
-    startfile(join(TRES_DIR,"stress.exe"))
+    Popen(["C:/PostInstall/TimerResolution/stress"],creationflags=CREATE_NO_WINDOW)
     beforetime = time()
     while time() - beforetime < 0.1:
         pass
@@ -150,6 +150,7 @@ def error(btn,msg):
 
 def heartbeat(toplevel: ctk.CTkToplevel, thread: threading.Thread):
     while True:
+        print("heartbeat")
         try:
             if not toplevel.winfo_exists():
                 toplevel.master.stop.set()
