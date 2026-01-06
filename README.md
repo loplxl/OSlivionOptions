@@ -29,4 +29,9 @@
       Auto Timer Resolution: Automatically starts a stress tests and tests a given range of timer resolutions and applies the best one for you.
     </p>
   </p>
+  <br>
+  <p>
+    <h1>Setup</h1>
+    Extract the TimerResolution.zip which contains dependencies for the auto timer resolution, and put the TimerResolution folder in the C:\PostInstall directory, create it if it doesnt exist, it must be organised so that C:\PostInstall\TimerResolution\timerres.exe exists.
+  </p>
 </div>
