@@ -2,10 +2,8 @@ import customtkinter as ctk
 import threading
 import asyncio
 import aiohttp
-from bs4 import BeautifulSoup
-import subprocess
 import importlib
-from pathlib import Path
+from utils import resource_path
 #goal:
 #function to delete button, create progressbar and then run the function to get the url
 #asynchronously run another function to download it to allow the rest of the gui to work
@@ -23,8 +21,8 @@ class downloadsPage(ctk.CTkFrame):
         progressbar = ctk.CTkProgressBar(appFrame,width=75)
         progressbar.set(0)
         app = importlib.import_module(f"downloads.{name}")
-        url,path = asyncio.run(app.getURL())
         progressbar.grid(row=0,column=1,padx=(0,5),sticky="e")
+        url,path = asyncio.run(app.getURL())
         async def uiUpdate(progressbar,frac):
             self.after(0,progressbar.set,frac)
         async def async_download(url,path,progressbar):
