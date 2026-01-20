@@ -14,12 +14,22 @@ import aiohttp
 import asyncio
 from datetime import datetime
 from subprocess import Popen, DETACHED_PROCESS, CREATE_NEW_PROCESS_GROUP, CREATE_NO_WINDOW, PIPE
-from os import listdir,getcwd
+from os import listdir,getcwd,mkdir
 from os.path import isdir,join,exists
 createTweaks = False
 #first check if tweaks tab should be made
 drive = getcwd()[:2]
-if exists(drive + r"\Oslivion\OSO\Tweaks"):
+OSlivionP = join(drive,"/OSlivion/")
+OSOP = join(OSlivionP,"OSO")
+quickaccessP = join(OSOP,"quickaccess")
+if not exists(OSlivionP):
+    mkdir(OSlivionP)
+if not exists(OSOP):
+    mkdir(OSOP)
+if not exists(quickaccessP):
+    mkdir(quickaccessP)
+
+if exists(drive + r"\OSlivion\OSO\Tweaks"):
     createTweaks = True
 def closeAutoUpdater(self):
     print("close auto updater")
