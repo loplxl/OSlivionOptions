@@ -4,7 +4,7 @@
   </h1>
 
   <p>
-    Application for configuring the operating system OSlivion
+    Application for configuring the operating system <a href="https://dsc.gg/oslivion">OSlivion</a>
   </p>
 
   <img src="options.png" alt="OSlivionOptions preview" width="600">
@@ -14,24 +14,21 @@
   <p>
     <h2>Downloads</h2>
     <p>
-      Downloads for these applications are provided, with automatic lookup for the latest versions:
-      Browsers: Brave, Tor, Ungoogled Chromium, Firefox, Mullvad, LibreWolf and Zen
-      Applications: Steam, Discord, Free Download Manager and qBittorrent
+      Downloads for lots of applications are provided, using web scraping to detect the url for the latest version
+      <p></p>
+      <img width="1202" height="1018" alt="image" src="https://github.com/user-attachments/assets/8f246303-060d-4155-a804-96a9a1c26b15" />
       <br>
     </p>
     <h2>Tweaks</h2>
     <p>
       Buttons are provided to apply / undo tweaks from OSlivion
+      <p></p>
+      <img width="1919" height="1023" alt="image" src="https://github.com/user-attachments/assets/9f917751-76d9-4eec-a407-03661a0a2e5e" />
     </p>
     <h2>Tools</h2>
     <p>
-      As of now, one tool is provided:
       Auto Timer Resolution: Automatically starts a stress tests and tests a given range of timer resolutions and applies the best one for you.
+      Auto NVIDIA Driver Debloat: Automatically debloats the NVIDIA driver and gives you only what you need.
     </p>
-  </p>
-  <br>
-  <p>
-    <h1>Setup</h1>
-    Extract the TimerResolution.zip which contains dependencies for the auto timer resolution, and put the TimerResolution folder in the C:\PostInstall directory, create it if it doesnt exist, it must be organised so that C:\PostInstall\TimerResolution\timerres.exe exists. The TimerResolution.zip can be found in the repo files, not in the releases zip file.
   </p>
 </div>

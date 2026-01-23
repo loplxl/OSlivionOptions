@@ -26,18 +26,26 @@ class downloadsPage(ctk.CTkFrame):
         p = importlib.import_module(f"downloads.{app[1]}")
         await p.getURL(self,btn)
     def download(self,btn,appFrame,name):
-        btn.destroy()
+        try:
+            btn.destroy()
+        except Exception as e:
+            print(f"error destroying button\n{e}")
         progressbar = ctk.CTkProgressBar(appFrame,width=75)
         progressbar.set(0)
         app = importlib.import_module(f"downloads.{name}")
         progressbar.grid(row=0,column=1,padx=(0,5),sticky="e")
-        url,path = asyncio.run(app.getURL())
+        try:
+            url,path = asyncio.run(app.getURL())
+        except Exception as e:
+            print(f"Error loading url for {name}\n{e}")
+            return
         async def uiUpdate(progressbar,frac):
             try:
                 self.after(0,progressbar.set,frac)
             except Exception:
                 pass
         async def async_download(url,path,progressbar):
+            print(f"attempting to download from {url} to {path}")
             lastUpdateFrac = 0
             async with aiohttp.ClientSession() as session:
                 async with session.get(url,ssl=ssl_ctx) as resp:
@@ -66,8 +74,9 @@ class downloadsPage(ctk.CTkFrame):
         downloads = { #category / [name to display,module location,font size]
             "Oslivion Options quick access": [
                 ["Autoruns","quickaccess.autoruns",20],
-                ["GoInterruptPolicy","quickaccess.goip",18],
-                ["$xNSudo","quickaccess.nsudo",22] #$x means that getURL is a procedure, not a function
+                ["GoInterruptPolicy","quickaccess.goip",15],
+                ["$xNSudo","quickaccess.nsudo",22], #$x means that getURL is a procedure, not a function
+                ["$xAuto Gpu Affinity","quickaccess.aga",14]
             ],
             "Firefox based browsers": [
                 ["⭐ Tor","firefox.tor",22],
@@ -115,7 +124,8 @@ class downloadsPage(ctk.CTkFrame):
                 ["Malwarebytes","utility.mwb",18],
                 ["Bleachbit","utility.bleachbit",19],
                 ["Process Lasso","utility.processlasso",17],
-                ["Revo Uninstaller","utility.revouninstaller",15]
+                ["Revo Uninstaller","utility.revouninstaller",15],
+                ["Visual Studio Code","utility.vscode",14]
             ]
         }
         self.scrollableDlFrame = ctk.CTkScrollableFrame(self, fg_color="#201d26")

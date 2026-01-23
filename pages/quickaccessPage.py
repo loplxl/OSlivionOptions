@@ -6,7 +6,8 @@ from subprocess import Popen, DETACHED_PROCESS, CREATE_NEW_PROCESS_GROUP
 names = {
     "autoruns.exe": ("Autoruns",22),
     "GoInterruptPolicy.exe": ("GoInterruptPolicy",20),
-    "NSudo.exe": ("NSudo",22)
+    "NSudo.exe": ("NSudo",22),
+    "AutoGpuAffinity": ("Auto Gpu Affinity",20,"AutoGpuAffinity\\AutoGpuAffinity.exe")
 }
 
 class quickaccessPage(ctk.CTkFrame):
@@ -37,8 +38,18 @@ class quickaccessPage(ctk.CTkFrame):
             appFrame.grid_rowconfigure(0, weight=1)
 
             data = names[app] #data[0] is name to display, data[1] is the size of font
+            try:
+                loc = f"{folderLoc}\\{data[2]}"
+            except IndexError:
+                loc = f"{folderLoc}\\{app}"
             appDownloadButton = ctk.CTkButton(appFrame, text=data[0], width=90, font=ctk.CTkFont(size=data[1]))
-            appDownloadButton.configure(command=lambda app=app: Popen([f"{folderLoc}\\{app}"],creationflags=DETACHED_PROCESS | CREATE_NEW_PROCESS_GROUP))
+            def launch(loc):
+                print(f"Launching {loc}")
+                try:
+                    Popen([loc],creationflags=DETACHED_PROCESS | CREATE_NEW_PROCESS_GROUP)
+                except FileNotFoundError:
+                    print(f"{loc} doesnt exist")
+            appDownloadButton.configure(command=lambda loc=loc: launch(loc))
             appDownloadButton.grid(row=0,column=0,sticky="nsew")
             appFrame.grid(row=row,column=column,padx=5,pady=5,sticky="ew")
         launchFrame.pack()

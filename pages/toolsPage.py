@@ -1,9 +1,16 @@
 import customtkinter as ctk
-from PIL import Image
 from utils import resource_path
-from tools import autotimerres
+from os import listdir,path
+import json
+import importlib
 
 class toolsPage(ctk.CTkFrame):
+    def apply(self,master,module):
+        mod = importlib.import_module(f"tools.{module}")
+        mod.apply(master)
+    def revert(self,master,module,btn):
+        mod = importlib.import_module(f"tools.{module}")
+        mod.default(master,btn)
     def __init__(self, master):
         super().__init__(master=master.main_area, fg_color="transparent")
         self.titleBar = ctk.CTkLabel(self, text="Tools", font=ctk.CTkFont(size=32,weight="bold"), bg_color="#1d1a23", height=50)
@@ -12,26 +19,37 @@ class toolsPage(ctk.CTkFrame):
         self.toolsFrame = ctk.CTkFrame(self, fg_color="transparent")
         self.toolsFrame.pack(side="top", fill="both", expand=True)
         #auto timer res
-        ATRFrame = ctk.CTkFrame(self.toolsFrame, width=500, height=220, corner_radius=20)
-        ATRFrame.pack_propagate(False)  # important to keep height fixed so corners are visible
-        ATRLabel = ctk.CTkLabel(ATRFrame, text="Auto Timer Resolution", pady=6, font=ctk.CTkFont(size=36,weight="bold"))
-        ATRLabel.pack(side="top")
-        ATRDescription = ctk.CTkLabel(ATRFrame, text="Automatically apply and benchmark multiple timer resolution values to find the one best for your hardware.\nFor accurate readings, close all other open applications.",wraplength=480,bg_color="transparent", font=ctk.CTkFont(size=19), justify="center")
-        ATRDescription.pack(side="top", pady=(5,10))
+        
+        TOOLS_DIR = resource_path("tools\\")
+        self.frames = []
+        for dir in listdir(TOOLS_DIR):
+            if dir != "__pycache__" and not dir.endswith(".py"):
+                try:
+                    with open(path.join(TOOLS_DIR,dir,"help.json")) as f:
+                        helpdata = json.load(f)
+                        Frame = ctk.CTkFrame(self.toolsFrame, width=475, height=220, corner_radius=20)
+                        Frame.pack_propagate(False)  # important to keep height fixed so corners are visible
+                        Label = ctk.CTkLabel(Frame, text=dir.replace("_"," "), pady=6, font=ctk.CTkFont(size=helpdata["titlesize"],weight="bold"))
+                        Label.pack(side="top")
+                        Description = ctk.CTkLabel(Frame, text=helpdata["description"],wraplength=470,bg_color="transparent", font=ctk.CTkFont(size=helpdata["descriptionsize"]), justify="center")
+                        Description.pack(side="top", pady=(5,10))
 
-        ATRBtnContainer = ctk.CTkFrame(ATRFrame, fg_color="transparent", bg_color="transparent")
-        ATRApplyBtn = ctk.CTkButton(ATRBtnContainer, text="Apply", font=ctk.CTkFont(size=16), fg_color="#00aa00", hover_color="#006600", width=150, command=lambda: autotimerres.apply(self.master.master))
-        ATRDefaultBtn = ctk.CTkButton(ATRBtnContainer, text="Default", font=ctk.CTkFont(size=16) , fg_color="#aa0000", hover_color="#660000", width=150)
-        ATRDefaultBtn.configure(command=lambda: autotimerres.default(self.master.master,ATRDefaultBtn))
+                        BtnContainer = ctk.CTkFrame(Frame, fg_color="transparent", bg_color="transparent")
+                        ApplyBtn = ctk.CTkButton(BtnContainer, text="Apply", font=ctk.CTkFont(size=16), fg_color="#00aa00", hover_color="#006600", width=120, command=lambda helpdata=helpdata: self.apply(self.master.master,helpdata["toolname"]))
+                        ApplyBtn.grid(row=0, column=0, padx=50, pady=10)
+                        if helpdata["defaultExists"] == "yes":
+                            DefaultBtn = ctk.CTkButton(BtnContainer, text="Default", font=ctk.CTkFont(size=16) , fg_color="#aa0000", hover_color="#660000", width=120)
+                            DefaultBtn.configure(command=lambda helpdata=helpdata: self.revert(self.master.master,helpdata["toolname"],DefaultBtn))
+                            DefaultBtn.grid(row=0, column=1, padx=50, pady=10)
+                        BtnContainer.grid_columnconfigure(0, weight=1)
+                        BtnContainer.pack(side="top")
 
-        ATRApplyBtn.grid(row=0, column=0, padx=50, pady=10)
-        ATRDefaultBtn.grid(row=0, column=1, padx=50, pady=10)
-
-        ATRBtnContainer.grid_columnconfigure(0, weight=1)
-        ATRBtnContainer.pack(side="top")
-
-        ATRFrame.rowconfigure(0, weight=1)
-        self.frames = [ATRFrame]
+                        Frame.rowconfigure(0, weight=1)
+                        self.frames.append(Frame)
+                except FileNotFoundError:
+                    print(f"{dir} has no help.json")
+                except Exception as e:
+                    print(f"unexpected error loading {dir} tool\n" + e)
         r=0
         c=0
         for frame in self.frames:
@@ -40,3 +58,4 @@ class toolsPage(ctk.CTkFrame):
             if c > 1:
                 c = 0
                 r += 1
+                

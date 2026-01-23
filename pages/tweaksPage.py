@@ -70,14 +70,12 @@ class tweaksPage(ctk.CTkFrame):
                     description = helpdata["description"]
                     file = helpdata["target"]
             except Exception as e:
-                print(e)
                 file = str(e)
 
             try:
                 with open(join(filesdir,"help.json"),'r') as f:
                     requirement = helpdata["requirement"]
             except Exception as e:
-                print(e)
                 requirement = None
             
             requirementNotMet = False
@@ -96,7 +94,6 @@ class tweaksPage(ctk.CTkFrame):
                     localFrame.onButton.pack(side="right",padx=8)
                     self.rmbBind(localFrame,description,join(filesdir,file))
                 else:
-                    print("Targetting file " + file)
                     if "action.bat" in files:
                         localFrame.onButton = ctk.CTkButton(localFrame, text="Apply", fg_color="#477843", hover_color="#376833", command=lambda d=directory, f=localFrame: self.SingleBattweakclicked(d,f), width=216, font=ctk.CTkFont(size=16))
                         localFrame.onButton.pack(side="right",padx=8)

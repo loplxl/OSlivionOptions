@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+version = "1.3"
 import customtkinter as ctk
 ctk.set_appearance_mode("dark")
 from sidebar import sidebar
@@ -38,6 +39,25 @@ def closeAutoUpdater(self):
     print("close auto updater")
     self.updateTL.destroy()
 class newGUI(ctk.CTk):
+    async def showlogs(self):
+        createnewtl = False
+        try:
+            if not self.logsTL.winfo_exists():
+                createnewtl = True
+        except Exception:
+            createnewtl = True
+        if createnewtl:
+            self.logsTL = ctk.CTkToplevel(self, fg_color="#201d26")
+            self.logsTL.protocol("WM_DELETE_WINDOW", lambda: self.logsTL.destroy())
+            self.logsTL.geometry("400x200")
+            self.logsTL.title("Current Logs")
+            self.logsTL.logbox = ctk.CTkTextbox(self.logsTL,fg_color="transparent")
+            self.logsTL.logbox.pack(side="top",fill="x",expand=True, pady=5,padx=5)
+            self.logsTL.logbox.insert("end", self.logger.logs)
+            self.logsTL.logbox.see("end")
+            self.logsTL.logbox.configure(state="disabled")
+        self.logsTL.attributes("-topmost", True)
+        self.logsTL.after(10,lambda: self.logsTL.attributes("-topmost", False))
     async def AutoUpdater(self):
         print("Auto updater called")
         try:
@@ -52,12 +72,12 @@ class newGUI(ctk.CTk):
             self.updateTL.geometry("400x200")
             self.updateTL.title("Check for updates")
 
-            self.processLabel = ctk.CTkTextbox(self.updateTL,fg_color="transparent")
-            self.processLabel.configure(state="disabled")
+            self.processLabel = ctk.CTkTextbox(self.updateTL,fg_color="transparent",state="disabled")
             self.processLabel.pack(side="top",fill="x",expand=True, pady=5,padx=5)
             self.updateTL.attributes("-topmost", True)
             self.updateTL.after(10,lambda: self.updateTL.attributes("-topmost", False))
         def log(msg):
+            print(msg) #to send it to log files
             self.processLabel.configure(state="normal")
             self.processLabel.insert("end", msg+"\n")
             self.processLabel.see("end")
@@ -142,7 +162,10 @@ class newGUI(ctk.CTk):
         self.dirs = sorted([d for d in listdir(self.basepath) if isdir(join(self.basepath,d))],key=str.casefold)
 
     def __init__(self):
-        self.CurrentVersion = "1.2.1"
+        from logger.logger import ConsoleLogger
+        self.logger = ConsoleLogger(master=self)
+        print("hello log viewer")
+        self.CurrentVersion = version
         self.dirs = "loading"
         self.drive = drive
         print(f"Running from drive {self.drive}")
@@ -176,7 +199,6 @@ class newGUI(ctk.CTk):
             # hide page 
             for child in self.main_area.winfo_children():
                 child.pack_forget()
-
             if self.cachedFrames["home"] is None:
                 self.cachedFrames["home"] = homePage(master=self)
 
@@ -261,8 +283,8 @@ def on_close(gui):
     apps = ["stress","MeasureSleep","timerres"]
     for app in apps:
         Popen(["taskkill","/f","/im",f"{app}.exe"],creationflags=CREATE_NO_WINDOW)
-    for process in gui.openSubprocesses: #extra
-        process.terminate()
+    #for process in gui.openSubprocesses: #extra
+    #    process.terminate()
     gui.destroy()
 gui = newGUI()
 gui.protocol("WM_DELETE_WINDOW", lambda: on_close(gui))

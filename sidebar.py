@@ -22,6 +22,8 @@ class sidebar(ctk.CTkFrame):
         toolsButton = ctk.CTkButton(self, text="Tools", command=master.toolsPage_init, fg_color="#1f1c25", hover_color="#23202b", font=ctk.CTkFont(size=24),height=45)
         quickaccessButton = ctk.CTkButton(self, text="Quick Access", command=master.quickaccessPage_init, fg_color="#1f1c25", hover_color="#23202b", font=ctk.CTkFont(size=24),height=45)
         aboutButton = ctk.CTkButton(self, text="About", command=master.aboutPage_init, fg_color="#1f1c25", hover_color="#23202b", font=ctk.CTkFont(size=24),height=45)
+        
+        logsButton = ctk.CTkButton(self, text="View current logs", command=lambda: threading.Thread(target=asyncio.run(master.showlogs()),daemon=True).start(), fg_color="#1f1c25", hover_color="#23202b", font=ctk.CTkFont(size=20),height=45)
         updateButton = ctk.CTkButton(self, text="Check for updates", command=lambda: threading.Thread(target=asyncio.run(master.AutoUpdater()),daemon=True).start(), fg_color="#1f1c25", hover_color="#23202b", font=ctk.CTkFont(size=20),height=45)
         
         
@@ -34,3 +36,4 @@ class sidebar(ctk.CTkFrame):
         quickaccessButton.pack(side="top", anchor="n", padx=5, pady=3, fill='x')
         aboutButton.pack(side="top", anchor="n", padx=5, pady=3, fill='x')
         updateButton.pack(side="bottom", anchor="s", padx=5, pady=(3,6), fill='x')
+        logsButton.pack(side="bottom", anchor="s", padx=5, pady=(3,6), fill='x')
