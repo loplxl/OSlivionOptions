@@ -2,54 +2,63 @@ import customtkinter as ctk
 from tkinter import StringVar
 from os.path import join, exists
 from os import environ, system, remove
-from subprocess import Popen, PIPE, CREATE_NEW_CONSOLE, CREATE_NO_WINDOW
+from subprocess import Popen, PIPE, CREATE_NO_WINDOW, DETACHED_PROCESS, CREATE_NEW_PROCESS_GROUP, HIGH_PRIORITY_CLASS
 import threading
+from random import randint
 import re
 from time import sleep, time
 from utils import resource_path
-
-from tools.Auto_Timer_Resolution.globaltimerres import setGTRR
 
 lastres = 5000
 bestdelta = 1000
 bestres = -1
 import ctypes
-def handleNtSetTimerResolution(minres,maxres,interval,samples,label):
+def handleNtSetTimerResolution(minres,maxres,interval,samples,label,stress):
     global bestdelta
     global lastres
     global bestres
-    setGTRR()
-    sleep(0.5) #wait for reg to be properly applied ygm, better safe than sorry
-    Popen(["taskkill","/f","/im","SetTimerResolution.exe"],creationflags=CREATE_NO_WINDOW)
-    ntdll = ctypes.WinDLL("ntdll")
-    NtSetTimerResolution = ntdll.NtSetTimerResolution
-    NtSetTimerResolution.argtypes = [ctypes.wintypes.ULONG,ctypes.wintypes.BOOLEAN,ctypes.POINTER(ctypes.wintypes.ULONG)]
+    try:
+        Popen(["taskkill","/f","/im","SetTimerResolution.exe"],creationflags=CREATE_NO_WINDOW)
+        ntdll = ctypes.WinDLL("ntdll")
+        NtSetTimerResolution = ntdll.NtSetTimerResolution
+        NtSetTimerResolution.argtypes = [ctypes.wintypes.ULONG,ctypes.wintypes.BOOLEAN,ctypes.POINTER(ctypes.wintypes.ULONG)]
 
-    bestlabel = ctk.CTkLabel(label.master, fg_color="transparent", text="")
-    bestlabel.pack()
-    for res in range(minres,maxres+1,interval):
-        if not label.master.winfo_exists(): #toplevel is gone
-            return
-        NtSetTimerResolution(res, True, ctypes.wintypes.ULONG())
-        label.configure(text=f"Benchmarking: {res}")
-        with Popen((resource_path("TimerResolution\\MeasureSleep").split(" ") + ["--samples",samples]),stdout=PIPE,text=True,creationflags=CREATE_NO_WINDOW) as MeasureSleep:
-            output = MeasureSleep.stdout.read()
-        match = re.search(r"Max: (\d+\.\d+)",output)
-        if match:
-            max = float(match.group(1))
-            if max < bestdelta:
-                bestdelta = max
-                bestres = res
-        if not label.master.winfo_exists(): #toplevel is gone
-            return
-        bestlabel.configure(text=f"Best: {bestres} {bestdelta}")
-    Popen(["taskkill","/f","/im","stress.exe"],creationflags=CREATE_NO_WINDOW)
-    label.configure(text="Done, trying to apply...")
-    saveTRESShortcut(bestres)
-    label.after(500)
-    label.configure(text=("Success" if exists(shortcut_location) else f"Failed, manually apply {bestres}. Guide in Discord."))
-    NtSetTimerResolution(0, False, ctypes.wintypes.ULONG()) #disable temporary timer res
-    system(f'"{shortcut_location}"') #must be system so that the settimerres exe stays open after closing oso
+        bestlabel = ctk.CTkLabel(label.master, fg_color="transparent", text="")
+        bestlabel.seed = randint(0,5000)
+        bestlabel.pack()
+        lastiterationseed = -1
+        for res in range(minres,maxres+1,interval):
+            lastiterationseed = bestlabel.seed
+            if not label.master.winfo_exists(): #toplevel is gone
+                return
+            NtSetTimerResolution(res, True, ctypes.wintypes.ULONG())
+            label.configure(text=f"Benchmarking: {res}")
+            with Popen((resource_path("TimerResolution\\MeasureSleep").split(" ") + ["--samples",samples]),stdout=PIPE,text=True,creationflags=CREATE_NO_WINDOW | CREATE_NEW_PROCESS_GROUP | DETACHED_PROCESS | HIGH_PRIORITY_CLASS) as MeasureSleep:
+                label.master.master.openSubprocesses.append(MeasureSleep)
+                output = MeasureSleep.stdout.read()
+                label.master.master.openSubprocesses.remove(MeasureSleep)
+            print(output)
+            match = re.search(r"Max: (\d+\.\d+)",output)
+            if match:
+                max = float(match.group(1))
+                if max < bestdelta:
+                    bestdelta = max
+                    bestres = res
+            if not label.master.winfo_exists(): #toplevel is gone
+                if lastiterationseed != bestlabel.seed: #closing and reopening toplevel during measuresleep can give inaccurate results, this is here to prevent that.
+                    return
+            bestlabel.configure(text=f"Best: {bestres} {bestdelta}")
+        stress.terminate()
+        label.configure(text="Done, trying to apply...")
+        saveTRESShortcut(bestres)
+        label.after(500)
+        label.configure(text=("Successfully applied!" if exists(shortcut_location) else f"Failed, manually apply {bestres}. Guide in Discord."))
+        bestlabel.destroy()
+        NtSetTimerResolution(0, False, ctypes.wintypes.ULONG()) #disable temporary timer res
+        system(f'"{shortcut_location}"') #must be system so that the settimerres exe stays open after closing oso
+    except Exception as e:
+        print(f"unexpected error during timer res\n{str(e)}")
+        stress.terminate()
 
 
 
@@ -82,9 +91,9 @@ def on_close(self):
     print("close atrtoplevel")
     self.stop.set()
     self.ATRtoplevel.destroy()
-    #for process in self.openSubprocesses:
-    #    print(process)
-    #    process.terminate()
+    for process in self.openSubprocesses:
+        print(f"Terminating {process}")
+        process.terminate()
 
 def apply(self):
     self.stop = threading.Event()
@@ -170,14 +179,14 @@ TRES_DIR = r"TimerResolution"
 
 
 def confirm(minres,maxres,interval,samples,btn,label):
-    stresstest = Popen(resource_path("TimerResolution\\stress").split(" "),creationflags=CREATE_NO_WINDOW)
-    #label.master.master.openSubprocesses.append(stresstest)
-    label.configure(text="Loading...")
-    beforetime = time()
-    while time() - beforetime < 1:
-        pass
-    
-    threading.Thread(target=handleNtSetTimerResolution,args=(int(minres.get()),int(maxres.get()),int(interval.get()),samples.get(),label), daemon=True).start()
+    with Popen(resource_path("TimerResolution\\stress").split(" "),creationflags=CREATE_NO_WINDOW) as stresstest:
+        label.master.master.openSubprocesses.append(stresstest)
+        label.configure(text="Loading...")
+        beforetime = time()
+        while time() - beforetime < 1: #wait 1s for stress test
+            pass
+        
+        threading.Thread(target=handleNtSetTimerResolution,args=(int(minres.get()),int(maxres.get()),int(interval.get()),samples.get(),label,stresstest), daemon=True).start()
 
 def error(btn,msg):
     btn.configure(text=msg)

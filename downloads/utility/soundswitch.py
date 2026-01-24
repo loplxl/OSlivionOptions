@@ -1,9 +1,9 @@
 import aiohttp
 from bs4 import BeautifulSoup
 from pathlib import Path
-async def getURL():
+async def getURL(ssl_ctx):
     async with aiohttp.ClientSession() as session:
-        async with session.get("https://github.com/Belphemur/SoundSwitch/releases/latest", allow_redirects=True) as resp:
+        async with session.get("https://github.com/Belphemur/SoundSwitch/releases/latest", allow_redirects=True,ssl=ssl_ctx) as resp:
             resp.raise_for_status()
             html = await resp.text()
             redirecturl = str(resp.url)

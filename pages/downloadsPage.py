@@ -35,7 +35,7 @@ class downloadsPage(ctk.CTkFrame):
         app = importlib.import_module(f"downloads.{name}")
         progressbar.grid(row=0,column=1,padx=(0,5),sticky="e")
         try:
-            url,path = asyncio.run(app.getURL())
+            url,path = asyncio.run(app.getURL(ssl_ctx))
         except Exception as e:
             print(f"Error loading url for {name}\n{e}")
             return

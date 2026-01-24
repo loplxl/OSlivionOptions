@@ -4,9 +4,6 @@ from amits timer res:
 measuresleep.exe
 setimerresolution.exe
 
-from https://www.github.com/loplxl:
-timerres.exe / dll / runtimeconfig.JSON
-
 source code available:
 stress.exe
 

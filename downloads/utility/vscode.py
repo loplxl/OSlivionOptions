@@ -1,3 +1,3 @@
 from pathlib import Path
-async def getURL():
+async def getURL(ssl_ctx):
     return "https://code.visualstudio.com/sha/download?build=stable&os=win32-x64-user",(Path.home() / "Downloads" / "VSCodeUserSetup-x64.exe")

@@ -1,16 +1,16 @@
 import aiohttp
 from bs4 import BeautifulSoup
 from pathlib import Path
-async def getURL():
+async def getURL(ssl_ctx):
     async with aiohttp.ClientSession() as session:
-        async with session.get("https://ungoogled-software.github.io/ungoogled-chromium-binaries/releases/windows/64bit/") as resp:
+        async with session.get("https://ungoogled-software.github.io/ungoogled-chromium-binaries/releases/windows/64bit/",ssl=ssl_ctx) as resp:
             resp.raise_for_status()
             html = await resp.text()
     soup = BeautifulSoup(html,"html.parser")
     top_li = soup.find("ul").find("li")
     v = top_li.find("a")["href"].rsplit("/",1)[1]
     async with aiohttp.ClientSession() as session:
-        async with session.get(f"https://ungoogled-software.github.io/ungoogled-chromium-binaries/releases/windows/64bit/{v}") as resp:
+        async with session.get(f"https://ungoogled-software.github.io/ungoogled-chromium-binaries/releases/windows/64bit/{v}",ssl=ssl_ctx) as resp:
             resp.raise_for_status()
             html = (await resp.text()).split("<h2>Downloads</h2>")[1]
     soup = BeautifulSoup(html,"html.parser")

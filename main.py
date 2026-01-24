@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-version = "1.3"
+version = "1.3.1"
 import customtkinter as ctk
 ctk.set_appearance_mode("dark")
 from sidebar import sidebar
@@ -279,13 +279,10 @@ def on_close(gui):
         gui.stop.set()
     except Exception:
         pass
-    from subprocess import Popen, CREATE_NO_WINDOW
-    apps = ["stress","MeasureSleep","timerres"]
-    for app in apps:
-        Popen(["taskkill","/f","/im",f"{app}.exe"],creationflags=CREATE_NO_WINDOW)
-    #for process in gui.openSubprocesses: #extra
-    #    process.terminate()
     gui.destroy()
+    for process in gui.openSubprocesses:
+        print(f"Terminating {process}")
+        process.terminate()
 gui = newGUI()
 gui.protocol("WM_DELETE_WINDOW", lambda: on_close(gui))
 gui.mainloop()
