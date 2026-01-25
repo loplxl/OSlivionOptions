@@ -1,0 +1,17 @@
+import aiohttp
+from bs4 import BeautifulSoup
+from pathlib import Path
+async def getURL(ssl_ctx,continuation,progressbar,completeDownload):
+    try:
+        async with aiohttp.ClientSession() as session:
+            async with session.get("https://www.voidtools.com/",ssl=ssl_ctx) as resp:
+                resp.raise_for_status()
+                html = await resp.text()
+        soup = BeautifulSoup(html,"html.parser")
+    except Exception as e:
+        print(f"Error during download: {e}")
+        await completeDownload(progressbar,progressbar.master,msg="Error",text_color="#ff5555")
+        return
+    url = soup.find("a",class_="button")["href"]
+    download_path = Path.home() / "Downloads" / url.rsplit("/",1)[1]
+    await continuation("https://www.voidtools.com/" + url,download_path)
