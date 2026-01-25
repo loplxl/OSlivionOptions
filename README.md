@@ -9,12 +9,12 @@
   ">
     <img
       src="Source Code/assets/icon.png"
-      alt="ShimmerOS Icon"
+      alt="Shimmer OS Icon"
       style="max-width: 256px; width: 25%; height: auto;"
     />
     <img
       src="Source Code/assets/options.png"
-      alt="ShimmerOS Banner"
+      alt="Shimmer OS Banner"
       style="max-width: 600px; width: 70%; height: auto;"
     />
   </div>
@@ -22,14 +22,14 @@
   <h1>ShimmerOS</h1>
 
   <p>
-    ShimmerOS is an operating system based on Windows 11 focused on performance.
+    Shimmer OS is an operating system based on Windows 11 focused on performance.
     You can join our server here:
-    <a href="https://dsc.gg/tSW5kYuACN">ShimmerOS</a>
+    <a href="https://discord.gg/Tgc4Ka4FQ7">Shimmer OS</a>
   </p>
 
   <p>
     This repository is for the Shimmer software, which is used to configure your
-    settings while in ShimmerOS, images are attached below.
+    settings while in Shimmer OS, images are attached below.
   </p>
 
 </div>
