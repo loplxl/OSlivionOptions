@@ -1,8 +1,5 @@
-version_info.txt
-build/
-dist/OSO/
+Source\ Code/build/
+Source\ Code/dist/
 __pycache__/
-tools/__pycache__/
 *.spec
-/quickaccess/
-/updater.exe
+Source\ Code/quickaccess/
