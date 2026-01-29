@@ -6,76 +6,78 @@ downloads = { #category / [name to display,module location,font size]
         ["$xAuto Gpu Affinity","quickaccess.aga",14]
     ],
     "Firefox based browsers": [
-        ["⭐ Tor","firefox.tor",22],
-        ["⭐ Mullvad","firefox.mullvad",20],
-        ["Zen","firefox.zen",22],
-        ["Waterfox","firefox.waterfox",20],
-        ["⭐ Firefox","firefox.firefox",20],
-        ["Librewolf","firefox.librewolf",20],
-        ["Floorp","firefox.floorp",20]
+        ["⭐ Tor","firefox.tor",24],
+        ["⭐ Mullvad","firefox.mullvad",22],
+        ["Zen","firefox.zen",24],
+        ["Waterfox","firefox.waterfox",22],
+        ["⭐ Firefox","firefox.firefox",22],
+        ["Librewolf","firefox.librewolf",22],
+        ["Floorp","firefox.floorp",22]
     ],
     "Chromium based browsers": [
-        ["Google Chrome","chromium.chrome",18],
-        ["⭐ Brave","chromium.brave",20],
-        ["Vivaldi","chromium.vivaldi",20],
-        ["Ungoogled\nChromium","chromium.ungoogled",14],
-        ["⭐ Helium","chromium.helium",20],
-        ["SRWare Iron","chromium.swiron",18],
-        ["Comodo Dragon","chromium.comododragon",16],
-        ["Epic Privacy\nBrowser","chromium.epic",14],
-        ["Opera GX","chromium.operagx",18],
-        ["Opera","chromium.opera",20],
-        ["Yandex","chromium.yandex",20],
-        ["Arc","chromium.arc",22]
+        ["Google Chrome","chromium.chrome",20],
+        ["⭐ Brave","chromium.brave",22],
+        ["Vivaldi","chromium.vivaldi",22],
+        ["Ungoogled\nChromium","chromium.ungoogled",16],
+        ["⭐ Helium","chromium.helium",22],
+        ["SRWare Iron","chromium.swiron",20],
+        ["Comodo Dragon","chromium.comododragon",18],
+        ["Epic Privacy\nBrowser","chromium.epic",16],
+        ["Opera GX","chromium.operagx",20],
+        ["Opera","chromium.opera",22],
+        ["Yandex","chromium.yandex",22],
+        ["Arc","chromium.arc",24]
     ],
     "Gaming": [
-        ["Legcord","utility.legcord",20],
-        ["Discord","utility.discord",20],
-        ["Vencord","utility.vencord",20],
-        ["Steam","utility.steam",22],
-        ["BakkesMod","utility.bakkesmod",20]
+        ["Legcord","utility.legcord",22],
+        ["Discord","utility.discord",22],
+        ["Vencord","utility.vencord",22],
+        ["Steam","utility.steam",24],
+        ["BakkesMod","utility.bakkesmod",22]
     ],
     "Utilities": [
-        ["Mullvad VPN","utility.mullvadvpn",18],
-        ["Malwarebytes","utility.mwb",18],
-        ["Bleachbit","utility.bleachbit",19],
-        ["qBittorrent","utility.qbt",18],
-        ["Free Download\nManager","utility.fdm",16],
-        ["CapFrameX","utility.cfx",18]
+        ["Mullvad VPN","utility.mullvadvpn",20],
+        ["Malwarebytes","utility.mwb",20],
+        ["Bleachbit","utility.bleachbit",21],
+        ["qBittorrent","utility.qbt",20],
+        ["Free Download\nManager","utility.fdm",18],
+        ["CapFrameX","utility.cfx",20]
     ],
     "Media": [
-        ["VLC","utility.vlc",22],
-        ["OBS Studio","utility.obs",18],
-        ["SoundSwitch","utility.soundswitch",18],
-        ["Lightshot","utility.lightshot",19],
-        ["ShareX","utility.sharex",20]
+        ["VLC","utility.vlc",24],
+        ["OBS Studio","utility.obs",20],
+        ["SoundSwitch","utility.soundswitch",20],
+        ["Lightshot","utility.lightshot",21],
+        ["ShareX","utility.sharex",22]
     ],
     "Customisation": [
-        ["Rainmeter","utility.rainmeter",19],
-        ["Windhawk","utility.windhawk",18],
-        ["StartAllBack","utility.startallback",16]
+        ["Rainmeter","utility.rainmeter",21],
+        ["Windhawk","utility.windhawk",20],
+        ["StartAllBack","utility.startallback",18]
     ],
     "Text Editors": [
-        ["Visual Studio Code","utility.vscode",14],
-        ["Notepad++","utility.nppp",20],
-        ["Sublime Text","utility.sublimetext",18],
-        ["Atom","utility.atom",22]
+        ["Visual Studio Code","utility.vscode",16],
+        ["Notepad++","utility.nppp",22],
+        ["Sublime Text","utility.sublimetext",20],
+        ["Atom","utility.atom",24]
     ],
     "Hardware Tools": [
-        ["CPU-Z","utility.cpuz",22],
-        ["GPU-Z","utility.gpuz",22],
-        ["ASRock Timing\nConfigurator","utility.asrocktc",13],
-        ["Custom Resolution\nUtility","utility.cru",14],
-        ["MoreClockTool","utility.mct",17],
-        ["Display Driver\nUninstaller","utility.ddu",16]
+        ["CPU-Z","utility.cpuz",24],
+        ["GPU-Z","utility.gpuz",24],
+        ["ASRock Timing\nConfigurator","utility.asrocktc",15],
+        ["Custom Resolution\nUtility","utility.cru",16],
+        ["MoreClockTool","utility.mct",19],
+        ["Display Driver\nUninstaller","utility.ddu",18],
+        ["Radeon Software\nSlimmer","utility.rsslimmer",20],
+        ["NVCleanStall","utility.nvcs",20]
     ],
     "System Tools": [
-        ["Process Lasso","utility.processlasso",17],
-        ["Revo Uninstaller","utility.revouninstaller",15],
-        ["WinRAR","utility.winrar",20],
-        ["Powershell 7","utility.powershell",18],
-        ["Teracopy","utility.teracopy",20],
-        ["Everything\nSearch","utility.everything",16]
+        ["Process Lasso","utility.processlasso",19],
+        ["Revo Uninstaller","utility.revouninstaller",17],
+        ["WinRAR","utility.winrar",22],
+        ["Powershell 7","utility.powershell",20],
+        ["Teracopy","utility.teracopy",22],
+        ["Everything\nSearch","utility.everything",18]
     ]
 }
 
