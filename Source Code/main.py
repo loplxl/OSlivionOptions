@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-version = "1.5.0.2"
+version = "1.5.0.3"
 import customtkinter as ctk
 ctk.set_appearance_mode("dark")
 from pages.sidebar import sidebar
@@ -14,7 +14,7 @@ import threading
 import aiohttp
 import asyncio
 from datetime import datetime
-from subprocess import Popen, DETACHED_PROCESS, CREATE_NEW_PROCESS_GROUP, CREATE_NO_WINDOW, PIPE
+from subprocess import Popen, DETACHED_PROCESS, CREATE_NEW_PROCESS_GROUP
 from os import listdir,getcwd,mkdir
 from os.path import isdir,join,exists
 from math import ceil
@@ -160,11 +160,23 @@ class newGUI(ctk.CTk):
         self.basepath = TWEAKSP
         self.dirs = sorted([d for d in listdir(self.basepath) if isdir(join(self.basepath,d))],key=str.casefold)
 
-    def shrink(self,widget,width,size):
+    def shrink(self, widget, width, size):
         text = widget.cget("text")
-        while ctk.CTkFont(size=size).measure(text) > width:
-            size -= 1
-        widget.configure(font=ctk.CTkFont(size=size))
+        s = []
+        low = max(1, size - 10)
+        high = size
+        best = low
+        while low <= high:
+            mid = (low + high) // 2
+            font = ctk.CTkFont(size=mid)
+            if font.measure(text) <= width:
+                best = mid
+                low = mid + 1
+            else:
+                high = mid - 1
+
+            s = best
+        widget.configure(font=ctk.CTkFont(size=s))
 
     def __init__(self):
         
@@ -206,7 +218,8 @@ class newGUI(ctk.CTk):
         self.cachedFrames["home"] = self.main_area.page
         self.sb = sidebar(master=self,createTweaks=createTweaks)
         self.sb.grid(row=0,column=0,sticky="ns")
-        print(f"Detected {self.winfo_reqwidth()}x{self.winfo_reqheight()}")
+        self.attributes("-topmost", True)
+        self.after(10,lambda: self.attributes("-topmost", False))
     
     def homePage_init(self):
         if self.currentTab != "home":

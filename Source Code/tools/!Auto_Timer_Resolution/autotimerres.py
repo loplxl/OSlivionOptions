@@ -8,6 +8,20 @@ from random import randint
 import re
 from time import sleep, time
 from utils import resource_path
+def userstopatr(stress,label,bestlabel,NtSetTimerResolution):
+    label.master.destroy()
+    stress.terminate()
+    saveTRESShortcut(bestres)
+    NtSetTimerResolution(0, False, ctypes.wintypes.ULONG()) #disable temporary timer res
+    Popen([r"C:\Users\lop\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup\SetTimerResolution.exe.lnk"],shell=True)
+def stopatr(stress,label,bestlabel,NtSetTimerResolution):
+    stress.terminate()
+    label.configure(text="Done, trying to apply...")
+    saveTRESShortcut(bestres)
+    label.configure(text=("Successfully applied!" if exists(shortcut_location) else f"Failed, manually apply {bestres}. Guide in Discord."))
+    bestlabel.destroy()
+    NtSetTimerResolution(0, False, ctypes.wintypes.ULONG()) #disable temporary timer res
+    Popen([r"C:\Users\lop\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup\SetTimerResolution.exe.lnk"],shell=True)
 
 lastres = 5000
 bestdelta = 1000
@@ -22,13 +36,11 @@ def handleNtSetTimerResolution(minres,maxres,interval,samples,label,stress):
         ntdll = ctypes.WinDLL("ntdll")
         NtSetTimerResolution = ntdll.NtSetTimerResolution
         NtSetTimerResolution.argtypes = [ctypes.wintypes.ULONG,ctypes.wintypes.BOOLEAN,ctypes.POINTER(ctypes.wintypes.ULONG)]
-
         bestlabel = ctk.CTkLabel(label.master, fg_color="transparent", text="")
-        bestlabel.seed = randint(0,5000)
         bestlabel.pack()
-        lastiterationseed = -1
+        stopbtn = ctk.CTkButton(label.master,text="Apply current best",fg_color="#ff3333",hover_color="#ff6666",text_color="#ffffff",command=lambda: userstopatr(stress,label,bestlabel,NtSetTimerResolution))
+        stopbtn.pack(pady=5)
         for res in range(minres,maxres+1,interval):
-            lastiterationseed = bestlabel.seed
             if not label.master.winfo_exists(): #toplevel is gone
                 return
             NtSetTimerResolution(res, True, ctypes.wintypes.ULONG())
@@ -44,20 +56,14 @@ def handleNtSetTimerResolution(minres,maxres,interval,samples,label,stress):
                 if max < bestdelta:
                     bestdelta = max
                     bestres = res
-            if not label.master.winfo_exists(): #toplevel is gone
-                if lastiterationseed != bestlabel.seed: #closing and reopening toplevel during measuresleep can give inaccurate results, this is here to prevent that.
-                    return
-            bestlabel.configure(text=f"Best: {bestres} {bestdelta}")
-        stress.terminate()
-        label.configure(text="Done, trying to apply...")
-        saveTRESShortcut(bestres)
-        label.after(500)
-        label.configure(text=("Successfully applied!" if exists(shortcut_location) else f"Failed, manually apply {bestres}. Guide in Discord."))
-        bestlabel.destroy()
-        NtSetTimerResolution(0, False, ctypes.wintypes.ULONG()) #disable temporary timer res
-        system(f'"{shortcut_location}"') #must be system so that the settimerres exe stays open after closing shimmer
+            if label.master.winfo_exists():
+                bestlabel.configure(text=f"Best: {bestres} {bestdelta}")
+            else:
+                stress.terminate()
+                raise Exception("user stopped timer res")
+        stopatr(stress,label,bestlabel,NtSetTimerResolution)
     except Exception as e:
-        print(f"unexpected error during timer res\n{str(e)}")
+        print(f"error during timer res\n{str(e)}")
         stress.terminate()
 
 

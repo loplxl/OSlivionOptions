@@ -22,25 +22,31 @@ class toolsPage(ctk.CTkFrame):
         
         TOOLS_DIR = resource_path("tools\\")
         self.frames = []
+        w = round((master.width-master.sb.winfo_width()-24)/2)
+        print(f"giving tools frames width {w}")
         for dir in listdir(TOOLS_DIR):
             if dir != "__pycache__" and not dir.endswith(".py"):
                 try:
                     with open(path.join(TOOLS_DIR,dir,"help.json")) as f:
                         helpdata = json.load(f)
-                        Frame = ctk.CTkFrame(self.toolsFrame, width=475, height=220, corner_radius=20)
-                        Frame.pack_propagate(False)  # important to keep height fixed so corners are visible
-                        Label = ctk.CTkLabel(Frame, text=dir.replace("_"," ").lstrip("!"), pady=6, font=ctk.CTkFont(size=helpdata["titlesize"],weight="bold"))
+                        Frame = ctk.CTkFrame(self.toolsFrame, width=w, height=220, corner_radius=20)
+                        Frame.pack_propagate(False)
+                        Label = ctk.CTkLabel(Frame, text=dir.replace("_"," ").lstrip("!"), pady=6)
+                        master.shrink(Label,1,helpdata["titlesize"])
+                        Label.configure(font=ctk.CTkFont(size=Label.cget("font").cget("size")-4,weight="bold"))
                         Label.pack(side="top")
-                        Description = ctk.CTkLabel(Frame, text=helpdata["description"],wraplength=470,bg_color="transparent", font=ctk.CTkFont(size=helpdata["descriptionsize"]), justify="center")
+                        Description = ctk.CTkLabel(Frame, text=helpdata["description"],bg_color="transparent", justify="center")
                         Description.pack(side="top", pady=(5,10))
-
+                        master.shrink(Description,w,helpdata["descriptionsize"])
+                        if "timer" in helpdata["description"].lower():
+                            Description.configure(font=ctk.CTkFont(size=round(Description.cget("font").cget("size")*2)))
                         BtnContainer = ctk.CTkFrame(Frame, fg_color="transparent", bg_color="transparent")
-                        ApplyBtn = ctk.CTkButton(BtnContainer, text="Apply", font=ctk.CTkFont(size=16), fg_color="#00aa00", hover_color="#006600", width=120, command=lambda helpdata=helpdata: self.apply(self.master.master,helpdata["toolname"]))
-                        ApplyBtn.grid(row=0, column=0, padx=50, pady=10)
+                        ApplyBtn = ctk.CTkButton(BtnContainer, text="Apply", font=ctk.CTkFont(size=16), fg_color="#00aa00", hover_color="#006600", width=round(w/4), command=lambda helpdata=helpdata: self.apply(self.master.master,helpdata["toolname"]))
+                        ApplyBtn.grid(row=0, column=0, padx=round(w/9), pady=10)
                         if helpdata["defaultExists"] == "yes":
-                            DefaultBtn = ctk.CTkButton(BtnContainer, text="Default", font=ctk.CTkFont(size=16) , fg_color="#aa0000", hover_color="#660000", width=120)
+                            DefaultBtn = ctk.CTkButton(BtnContainer, text="Default", font=ctk.CTkFont(size=16) , fg_color="#aa0000", hover_color="#660000", width=round(w/4))
                             DefaultBtn.configure(command=lambda helpdata=helpdata: self.revert(self.master.master,helpdata["toolname"],DefaultBtn))
-                            DefaultBtn.grid(row=0, column=1, padx=50, pady=10)
+                            DefaultBtn.grid(row=0, column=1, padx=round(w/9), pady=10)
                         BtnContainer.grid_columnconfigure(0, weight=1)
                         BtnContainer.pack(side="top")
 
@@ -49,7 +55,7 @@ class toolsPage(ctk.CTkFrame):
                 except FileNotFoundError:
                     print(f"{dir} has no help.json")
                 except Exception as e:
-                    print(f"unexpected error loading {dir} tool\n" + e)
+                    print(f"unexpected error loading {dir} tool\n" + str(e))
         r=0
         c=0
         for frame in self.frames:

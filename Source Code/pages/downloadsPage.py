@@ -18,11 +18,11 @@ downloads = { #category / [name to display,module location,font size]
         ["Google Chrome","chromium.chrome",20],
         ["⭐ Brave","chromium.brave",22],
         ["Vivaldi","chromium.vivaldi",22],
-        ["Ungoogled\nChromium","chromium.ungoogled",16],
+        ["Ungoogled\nChromium","chromium.ungoogled",14],
         ["⭐ Helium","chromium.helium",22],
         ["SRWare Iron","chromium.swiron",20],
         ["Comodo Dragon","chromium.comododragon",18],
-        ["Epic Privacy\nBrowser","chromium.epic",16],
+        ["Epic Privacy\nBrowser","chromium.epic",14],
         ["Opera GX","chromium.operagx",20],
         ["Opera","chromium.opera",22],
         ["Yandex","chromium.yandex",22],
@@ -64,11 +64,11 @@ downloads = { #category / [name to display,module location,font size]
     "Hardware Tools": [
         ["CPU-Z","utility.cpuz",24],
         ["GPU-Z","utility.gpuz",24],
-        ["ASRock Timing\nConfigurator","utility.asrocktc",15],
-        ["Custom Resolution\nUtility","utility.cru",16],
+        ["ASRock Timing\nConfigurator","utility.asrocktc",14],
+        ["Custom Resolution\nUtility","utility.cru",14],
         ["MoreClockTool","utility.mct",19],
-        ["Display Driver\nUninstaller","utility.ddu",18],
-        ["Radeon Software\nSlimmer","utility.rsslimmer",20],
+        ["Display Driver\nUninstaller","utility.ddu",14],
+        ["Radeon Software\nSlimmer","utility.rsslimmer",14],
         ["NVCleanStall","utility.nvcs",20]
     ],
     "System Tools": [
@@ -77,7 +77,13 @@ downloads = { #category / [name to display,module location,font size]
         ["WinRAR","utility.winrar",22],
         ["Powershell 7","utility.powershell",20],
         ["Teracopy","utility.teracopy",22],
-        ["Everything\nSearch","utility.everything",18]
+        ["Everything Search","utility.everything",18]
+    ],
+    "Geometry Dash": [
+        ["MegaHack v9","utility.mhv9",20],
+        ["MegaHack v8","utility.mhv8",20],
+        ["MegaHack v7","utility.mhv7",20],
+        ["Geode","utility.geode",22]
     ]
 }
 
@@ -145,6 +151,7 @@ class downloadsPage(ctk.CTkFrame):
         threading.Thread(target=lambda: asyncio.run(app.getURL(ssl_ctx,continuation,progressbar,self.completeDownload)), daemon=True).start()
         
     def __init__(self, master):
+        print("initialising downloads")
         super().__init__(master=master.main_area, fg_color="transparent")
         self.titleBar = ctk.CTkLabel(self, text="Downloads (downloads go to downloads folder)", font=ctk.CTkFont(size=32,weight="bold"), bg_color="#1d1a23", height=50)
         master.shrink(self.titleBar,round(master.width/1250*1020),32)

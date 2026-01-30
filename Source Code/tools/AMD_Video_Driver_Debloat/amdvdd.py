@@ -67,7 +67,7 @@ def apply(self):
                 amdfendr_cb.pack(side="top",padx=5,pady=5)
 
                 HDABus = ctk.StringVar(value="HDABus")
-                HDABus_cb = ctk.CTkCheckBox(confframe,text="HDABus\nMonitor HDMI Audio Support",variable=HDABus,onvalue=1,offvalue=0)
+                HDABus_cb = ctk.CTkCheckBox(confframe,text="HDABus\nMonitor HDMI Audio Support",variable=HDABus,onvalue=0,offvalue=1)
                 HDABus_cb.select()
                 HDABus_cb.pack(side="top",padx=5,pady=5)
                 self.AMDVDDtoplevel.geometry("400x365")
@@ -145,8 +145,9 @@ def apply(self):
                             if Dproc.returncode == 0:
                                 if HDABus.get():
                                     if proc.returncode == 0:
-                                        rmtree(CLEAN_DIR)
-                                        remove(EXE_PATH)
+                                        pass
+                                        #rmtree(CLEAN_DIR)
+                                        #remove(EXE_PATH)
                                         
                         else:
                             raise Exception("INF file not found")

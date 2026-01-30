@@ -100,7 +100,8 @@ class tweaksPage(ctk.CTkFrame):
                     "UAC": 0,
                     "VPN_Support": 1,
                     "Wi-Fi_Support": 1,
-                    "Windows_Update": 1
+                    "Windows_Update": 1,
+                    "ISO_Mount_Support": 0
                 }
                 json.dump(data,f,indent=4)
         else:

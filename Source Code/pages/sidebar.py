@@ -45,6 +45,7 @@ class sidebar(ctk.CTkFrame):
         downloadsButton.pack(side="top", anchor="n", padx=5, pady=3, fill='x')
         if createTweaks:
             tweaksButton = ctk.CTkButton(self, text="Tweaks", command=master.tweaksPage_init, fg_color="#1f1c25", hover_color="#23202b", font=ctk.CTkFont(size=24),height=btnheight)
+            master.shrink(tweaksButton,width-20,24)
             tweaksButton.pack(side="top", anchor="n", padx=5, pady=3, fill='x')
         toolsButton.pack(side="top", anchor="n", padx=5, pady=3, fill='x')
         quickaccessButton.pack(side="top", anchor="n", padx=5, pady=3, fill='x')
