@@ -3,7 +3,7 @@ from pathlib import Path
 import subprocess
 async def getURL(ssl_ctx,continuation,progressbar,completeDownload):
     try:
-        proc = subprocess.Popen(["curl", "https://sourceforge.net/projects/qbittorrent/files/latest/download"],stdout=subprocess.PIPE)
+        proc = subprocess.Popen(["curl", "https://sourceforge.net/projects/equalizerapo/files/latest/download"],stdout=subprocess.PIPE)
         html = proc.communicate()[0]
         soup = BeautifulSoup(html,"html.parser")
     except Exception as e:

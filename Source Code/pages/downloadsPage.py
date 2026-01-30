@@ -33,7 +33,14 @@ downloads = { #category / [name to display,module location,font size]
         ["Discord","utility.discord",22],
         ["Vencord","utility.vencord",22],
         ["Steam","utility.steam",24],
-        ["BakkesMod","utility.bakkesmod",22]
+        ["Epic Games","utility.epic",22],
+        ["BakkesMod","utility.bakkesmod",24],
+        ["Prism Launcher","utility.prism",20],
+        ["Lunar Client","utility.lunar",20],
+        ["MegaHack v9","utility.mhv9",20],
+        ["MegaHack v8","utility.mhv8",20],
+        ["MegaHack v7","utility.mhv7",20],
+        ["Geode","utility.geode",22]
     ],
     "Utilities": [
         ["Mullvad VPN","utility.mullvadvpn",20],
@@ -46,7 +53,11 @@ downloads = { #category / [name to display,module location,font size]
     "Media": [
         ["VLC","utility.vlc",24],
         ["OBS Studio","utility.obs",20],
+        ["Medal","utility.medal",22],
         ["SoundSwitch","utility.soundswitch",20],
+        ["Voicemeeter Banana","utility.vmbanana",20],
+        ["Equilazer APO","utility.eqapo",20],
+        ["HandBrake","utility.handbrake",20],
         ["Lightshot","utility.lightshot",21],
         ["ShareX","utility.sharex",22]
     ],
@@ -77,13 +88,8 @@ downloads = { #category / [name to display,module location,font size]
         ["WinRAR","utility.winrar",22],
         ["Powershell 7","utility.powershell",20],
         ["Teracopy","utility.teracopy",22],
-        ["Everything Search","utility.everything",18]
-    ],
-    "Geometry Dash": [
-        ["MegaHack v9","utility.mhv9",20],
-        ["MegaHack v8","utility.mhv8",20],
-        ["MegaHack v7","utility.mhv7",20],
-        ["Geode","utility.geode",22]
+        ["Everything Search","utility.everything",18],
+        ["WizTree","utility.wiztree",22]
     ]
 }
 
