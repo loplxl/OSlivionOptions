@@ -69,7 +69,7 @@ class tweaksPage(ctk.CTkFrame):
         warningFrame = ctk.CTkFrame(self, fg_color="#232029")
         warningLabel1 = ctk.CTkLabel(warningFrame,text="⚠️ WARNING ⚠️",font=ctk.CTkFont(size=32))
         warningLabel1.pack(side="top",pady=(45,0))
-        warningLabel2 = ctk.CTkLabel(warningFrame,text="Do not blindly apply tweaks that you dont know what they do. Only follow official guides.\nWe are not responsible for any damage (however unlikely) you cause upon yourself.",font=ctk.CTkFont(size=22),wraplength=master.width/1250*950)
+        warningLabel2 = ctk.CTkLabel(warningFrame,text="Do not blindly apply changes that you dont know what they do. Only follow official guides.\nWe are not responsible for any damage (however unlikely) you cause upon yourself.",font=ctk.CTkFont(size=22),wraplength=master.width/1250*950)
         warningLabel2.pack(side="top",pady=(15,0))
         def proceed():
             warningFrame.destroy()
@@ -203,7 +203,7 @@ class tweaksPage(ctk.CTkFrame):
     def __init__(self, master):
 
         super().__init__(master=master.main_area, fg_color="transparent")
-        self.titleBar = ctk.CTkLabel(self, text="Tweaks", font=ctk.CTkFont(size=32,weight="bold"), height=50)
+        self.titleBar = ctk.CTkLabel(self, text="Options", font=ctk.CTkFont(size=32,weight="bold"), height=50)
         self.titleBar.pack(fill="x")
         if not (master.GPUMans or master.CPUMans):
             print("abc")

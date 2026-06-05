@@ -17,20 +17,20 @@ class sidebar(ctk.CTkFrame):
         self.pack_propagate(False)
         self.icon.pack(side="top", anchor="n")
 
-        self.settings_icon = ctk.CTkButton(
-            self,
-            image=ctk.CTkImage(
-                dark_image=Image.open(resource_path("assets\\settings.png")),
-                size=(24, 24)
-            ),
-            text="",
-            width=24,
-            height=24,
-            fg_color="transparent",
-            hover_color="#27242d",
-            command=master.settingsPage_init)
+        #self.settings_icon = ctk.CTkButton(
+        #    self,
+        #    image=ctk.CTkImage(
+        #        dark_image=Image.open(resource_path("assets\\settings.png")),
+        #        size=(24, 24)
+        #    ),
+        #    text="",
+        #    width=24,
+        #    height=24,
+        #    fg_color="transparent",
+        #    hover_color="#27242d",
+        #    command=master.settingsPage_init)
 
-        self.settings_icon.place(x=0, y=0)
+        #self.settings_icon.place(x=0, y=0)
 
         
         #7 buttons take up 315 px
@@ -56,7 +56,7 @@ class sidebar(ctk.CTkFrame):
         homeButton.pack(side="top", anchor="n", padx=5, pady=3, fill='x')
         downloadsButton.pack(side="top", anchor="n", padx=5, pady=3, fill='x')
         if createTweaks:
-            tweaksButton = ctk.CTkButton(self, text="Tweaks", command=master.tweaksPage_init, fg_color="#1f1c25", hover_color="#23202b", font=ctk.CTkFont(size=24),height=btnheight)
+            tweaksButton = ctk.CTkButton(self, text="Options", command=master.tweaksPage_init, fg_color="#1f1c25", hover_color="#23202b", font=ctk.CTkFont(size=24),height=btnheight)
             master.shrink(tweaksButton,width-20,24)
             tweaksButton.pack(side="top", anchor="n", padx=5, pady=3, fill='x')
         toolsButton.pack(side="top", anchor="n", padx=5, pady=3, fill='x')

@@ -70,11 +70,11 @@ class settingsPage(ctk.CTkFrame):
 
 
         self.peak_os_mode = ctk.IntVar(value=self.gui.settings["peak_os_mode"])
-        pomCheckbox = ctk.CTkCheckBox(self,text="Change 'Shimmer' to 'Peak' in software (for the funsies)",
-                                       variable=self.peak_os_mode,
-                                       command=lambda: self.updateSettings(self.peak_os_mode,
-                                       match=["peak_os_mode"]))
-        pomCheckbox.pack()
+        #pomCheckbox = ctk.CTkCheckBox(self,text="Change 'Shimmer' to 'Peak' in software (for the funsies)",
+        #                               variable=self.peak_os_mode,
+        #                               command=lambda: self.updateSettings(self.peak_os_mode,
+        #                               match=["peak_os_mode"]))
+        #pomCheckbox.pack()
 
 
         idocCheckbox.configure(command=lambda: self.updateSettings(
@@ -84,6 +84,6 @@ class settingsPage(ctk.CTkFrame):
         ddfadCheckbox.configure(command=lambda: self.updateSettings(
                                     self.delete_driver_files_after_debloat,
                                     match=[["delete_driver_files_after_debloat",2,ddfadCheckbox]]))
-        pomCheckbox.configure(command=lambda: self.updateSettings(
-                                    self.peak_os_mode,
-                                    match=[["peak_os_mode",2,pomCheckbox]]))
+        #pomCheckbox.configure(command=lambda: self.updateSettings(
+        #                            self.peak_os_mode,
+        #                            match=[["peak_os_mode",2,pomCheckbox]]))

@@ -9,15 +9,17 @@ downloads = { #category / [name to display,module location,font size]
     "Firefox based browsers": [
         ["⭐ Tor","firefox.tor",24],
         ["⭐ Mullvad","firefox.mullvad",22],
-        ["Zen","firefox.zen",24],
-        ["Waterfox","firefox.waterfox",22],
-        ["Firefox","firefox.firefox",22],
         ["Librewolf","firefox.librewolf",22],
-        ["Floorp","firefox.floorp",22]
+        ["Mercury","firefox.mercury",22],
+        ["Floorp","firefox.floorp",22],
+        ["Firefox","firefox.firefox",22],
+        ["Zen","firefox.zen",24],
+        ["Waterfox","firefox.waterfox",22]
     ],
     "Chromium based browsers": [
         ["⭐ Brave","chromium.brave",22],
         ["⭐ Helium","chromium.helium",22],
+        ["⭐ Thorium","chromium.thorium",22],
         ["Google Chrome","chromium.chrome",20],
         ["Vivaldi","chromium.vivaldi",22],
         ["Ungoogled\nChromium","chromium.ungoogled",14],
@@ -38,9 +40,6 @@ downloads = { #category / [name to display,module location,font size]
         ["BakkesMod","utility.bakkesmod",24],
         ["Prism Launcher","utility.prism",20],
         ["Lunar Client","utility.lunar",20],
-        ["MegaHack v9","utility.mhv9",20],
-        ["MegaHack v8","utility.mhv8",20],
-        ["MegaHack v7","utility.mhv7",20],
         ["Geode","utility.geode",22],
         ["Xbox App","utility.xbox",20]
     ],
