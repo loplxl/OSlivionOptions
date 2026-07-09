@@ -16,6 +16,6 @@ async def getURL(ssl_ctx,continuation,progressbar,completeDownload):
         text = tag.get_text(strip=True)
         if "Download Display Driver Uninstaller" in text:
             version = text.split()[-1]
-    url = f"https://www.wagnardsoft.com/DDU/download/DDU%20v{version}.exe"
+    url = f"https://www.download.wagnardsoft.com/DDU/DDU%20v{version}.exe"
     download_path = Path.home() / "Downloads" / url.rsplit("/",1)[1]
     await continuation(url,download_path)
