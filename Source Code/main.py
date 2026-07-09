@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-version = "1.7.0.5"
+version = "1.7.0.6"
 import ctypes
 import sys
 admin = False
