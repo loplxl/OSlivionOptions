@@ -40,21 +40,22 @@
 <h2>Downloads</h2>
 Downloads for lots of applications are provided, using web scraping to detect the url for the latest version
 <p></p>
-<img width="1202" height="1018" alt="image" src="https://github.com/user-attachments/assets/8f246303-060d-4155-a804-96a9a1c26b15" />
+<img width="1252" height="767" alt="Shimmer_xK1WLwpGM2" src="https://github.com/user-attachments/assets/0ff9b1da-34c3-46bf-9db9-0d967470e8b9" />
 <br>
 <h2>Tweaks</h2>
 Buttons are provided to apply / undo tweaks from ShimmerOS
 <p></p>
-<img width="1919" height="1023" alt="image" src="https://github.com/user-attachments/assets/9f917751-76d9-4eec-a407-03661a0a2e5e" />
+<img width="1252" height="767" alt="image" src="https://github.com/user-attachments/assets/82b17c94-52a3-4afd-88f7-72116616f17a" />
+
 <h2>Tools</h2>
 <ul>
   <li><strong>Auto Timer Resolution:</strong></li>
     <ul>
-      <li>Automatically starts a stress tests and tests a given range of timer resolutions and applies the best one for you.<br></li>
+      <li>Automatically starts a stress test and tests a given range of timer resolutions and applies the best one for your system.<br></li>
     </ul>
   <br>
-  <li><strong>Auto NVIDIA Driver Debloat:</strong></li>
+  <li><strong>Permanent High Priority:</strong></li>
     <ul>
-      <li>Automatically debloats the NVIDIA driver and gives you only what you need.<br></li>
+      <li>Automatically sets specified executables to high priority whenever they're launched.<br></li>
     </ul>
 </ul>
