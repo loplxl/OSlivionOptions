@@ -22,7 +22,8 @@
   <h1>ShimmerOS</h1>
 
   <p>
-    Shimmer OS is an operating system based on Windows 11 focused on performance.
+    Shimmer OS is an operating system based on Windows 11/10 focused on performance.
+    It is applied through the use of a playbook (open source, extract .apbx with password malte) or in the future, an ISO.
     You can join our server here:
     <a href="https://discord.gg/Tgc4Ka4FQ7">Shimmer OS</a>
   </p>
